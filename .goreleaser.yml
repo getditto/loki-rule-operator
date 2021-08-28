@@ -20,8 +20,8 @@ archives:
       amd64: x86_64
 dockers:
   - image_templates:
-    - eu.gcr.io/opsgy-com/loki-rule-operator:latest
-    - eu.gcr.io/opsgy-com/loki-rule-operator:{{ .Tag }}
+    - quay.io/moustafab/loki-rule-operator:latest
+    - quay.io/moustafab/loki-rule-operator:{{ .Tag }}
 checksum:
   name_template: 'checksums.txt'
 snapshot:
