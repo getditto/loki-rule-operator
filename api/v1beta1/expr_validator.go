@@ -157,7 +157,7 @@ func enforceNode(ns string, node logql.Expr) error {
 		}
 
 	case "*literalExpr":
-		return nil
+		return fmt.Errorf("literal expressions not allowed")
 
 	default:
 		panic(fmt.Errorf("parser.Walk: unhandled node type %s", t))
