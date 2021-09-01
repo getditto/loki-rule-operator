@@ -105,10 +105,11 @@ func (r *LokiRuleReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	// Evaluate rules
 	spec, err := lokiRule.ValidateExpressions()
 	if err != nil {
+		ctrl.Log.Error(err, "Failed to validate expressions")
 		lokiRule.Status.Valid = false
 		lokiRule.Status.Message = err.Error()
 		r.Client.Status().Update(context.TODO(), lokiRule)
-		return ctrl.Result{}, nil
+		return ctrl.Result{Requeue: true}, nil
 	}
 	if !lokiRule.Status.Valid {
 		lokiRule.Status.Valid = true
@@ -137,7 +138,7 @@ func (r *LokiRuleReconciler) Reconcile(ctx context.Context, req ctrl.Request) (c
 	if err != nil {
 		lokiRule.Status.Message = err.Error()
 		r.Client.Status().Update(context.TODO(), lokiRule)
-		return ctrl.Result{}, err
+		return ctrl.Result{Requeue: true}, err
 	}
 
 	// Update ConfigMap
