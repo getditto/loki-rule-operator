@@ -41,7 +41,14 @@ spec:
         - -enable-webhook
         {{- end }}
         - -rules-configmap={{ .Values.loki.rulesConfigMap.namespace | default .Release.Namespace }}/{{ .Values.loki.rulesConfigMap.name }}
-
+        {{- if .Values.extraArgs }}
+        {{- range $arg, $value := .Values.extraArgs }}
+        - {{ $arg }}={{ $value }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.env }}
+        env: {{ toYaml .Values.env | nindent 10 }}
+        {{- end }}
         ports:
         - name: https
           containerPort: 9443
@@ -75,15 +82,15 @@ spec:
         resources:
             {{- toYaml .Values.resources | nindent 12 }}
 
+{{- if .Values.admissionWebhooks.enabled }}
         volumeMounts:
         - name: tls-secret
           mountPath: /tmp/k8s-webhook-server/serving-certs
-
       volumes:
       - name: tls-secret
         secret:
           secretName: loki-rule-operator
-
+{{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

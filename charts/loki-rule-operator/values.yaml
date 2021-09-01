@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: eu.gcr.io/opsgy-com/loki-rule-operator
+  repository: quay.io/moustafab/loki-rule-operator
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
@@ -50,11 +50,11 @@ loki:
     namespace: ""
 
 admissionWebhooks:
-  enabled: true
+  enabled: false
   annotations: {}
 
 certManager:
-  enabled: true
+  enabled: false
   group: cert-manager.io
   kind: ClusterIssuer
   issuerName: selfsigned
